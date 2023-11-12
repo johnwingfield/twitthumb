@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Social Media UI</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .post {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  .post:last-child {
+    border-bottom: none;
+  }
+  .post img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .thumbnail-preview {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .thumbnail-preview img {
+    position: absolute;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="post">
+    <h2>Post Title</h2>
+    <p>Post content goes here...</p>
+    <div class="thumbnail-container">
+      <!-- Thumbnails will be inserted here by JavaScript -->
+    </div>
+    <button onclick="selectThumbnail()">Select Thumbnail</button>
+  </div>
+</div>
+
+<script>
+  const images = [
+    'path/to/image1.jpg',
+    'path/to/image2.jpg',
+    'path/to/image3.jpg',
+    'path/to/image4.jpg'
+  ];
+  
+  function selectThumbnail() {
+    // This function will create thumbnail previews for the user to select
+    const container = document.querySelector('.thumbnail-container');
+    container.innerHTML = ''; // Clear previous thumbnails
+    
+    images.forEach((src, index) => {
+      const thumbnail = document.createElement('div');
+      thumbnail.classList.add('thumbnail-preview');
+      thumbnail.onclick = function() { setThumbnail(index); };
+      
+      const img = document.createElement('img');
+      img.src = src;
+      img.onload = function() {
+        // Adjust image position based on its size
+        if (img.width > img.height) {
+          img.style.left = `${-((img.width - img.height) / 2)}px`;
+        } else {
+          img.style.top = `${-((img.height - img.width) / 2)}px`;
+        }
+      };
+      
+      thumbnail.appendChild(img);
+      container.appendChild(thumbnail);
+    });
+  }
+  
+  function setThumbnail(index) {
+    // This function will set the selected thumbnail for the post
+    const postImage = document.querySelector('.post img');
+    postImage.src = images[index];
+  }
+</script>
+</body>
+</html>
